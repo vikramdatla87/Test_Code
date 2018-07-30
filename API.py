@@ -28,7 +28,7 @@ import pandas as pd
    print('step 1: db query?')
 
    query = """
-        INSERT into dwh.XIFM.track_listings
+        INSERT into dwh.xifm_tracklisting
         SELECT p1.listing_id, p1.item_id, p1.live_id, p1.listing_date, p1.make, p1.model, p1.year::int, p1.kilometers::bigint, p1.regional_specs, p1.price::bigint, p1.customer_id, p1.email, p1.phone, p1.device_id, p1.user_product, p2.first_name, current_date as inserted_date,p2.city
             FROM (
               SELECT
@@ -75,6 +75,7 @@ import pandas as pd
                left join (select distinct first_name,id from livesync.dubizzle__dubizzle_product__dubizzle__auth_user) l on k.user_id= l.id
                where event_type in ('uae_listing_approved', 'uae_listing_deleted')
                and event_date >= current_date-90 and category_l1 not ilike '%comm%'and category_l1 <> 'job wanted') as p2 on p1.listing_id=p2.listing_id
+               where p2.city='Dubai'
         ;"""
 
 
@@ -104,7 +105,7 @@ import pandas as pd
 
    df['first_name'] = df['first_name'].fillna('dubizzler')
 
-   gc = pygsheets.authorize(service_file='/Users/vikram.datla/XIFM-Retargeting-6564d9cb9116.json')
+   gc = pygsheets.authorize(service_file='/home/ubuntu/XIFM-Retargeting-6564d9cb9116.json')
    sh = gc.open('XIFM_Retargeting')
    wks = sh[0]
 
