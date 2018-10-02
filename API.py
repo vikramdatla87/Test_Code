@@ -6,11 +6,7 @@ import pygsheets
 import pandas as pd
 
 # database connection
-   REDSHIFT_USER = os.environ.get('ETL_DW_USER')
-   REDSHIFT_PASSWORD = os.environ.get('ETL_DW_PASS')
 
-   db = psycopg2.connect(dbname='dwh', user=REDSHIFT_USER, host='bi-proxy.dubizzlecloud.com',
-                          password=REDSHIFT_PASSWORD, port=5439)
 
 
    query_check = "SELECT * FROM dwh.XIFM.track_listings where listing_date = (current_date-21)"
